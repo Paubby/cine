@@ -1,0 +1,56 @@
+<header class="cabecera">
+  <h2>Tu reserva</h2>
+  <button type="button" class="volver" (click)="volver.emit()">
+    Volver a la cartelera
+  </button>
+</header>
+
+@if (reservasService.reservas().length === 0) {
+  <p>No has añadido ninguna película todavía.</p>
+  <button type="button" class="volver" (click)="volver.emit()">
+    Ver la cartelera
+  </button>
+} @else {
+  <p aria-live="polite">
+    {{ reservasService.totalEntradas() }} entradas de {{ reservasService.totalTitulos() }} películas
+  </p>
+
+  <ul class="lista">
+    @for (r of reservasService.reservas(); track r.id) {
+      <li>
+        <img
+          class="mini"
+          [ngSrc]="r.cartel"
+          width="48"
+          height="72"
+          [alt]="'Cartel de ' + r.titulo"
+        />
+
+        <div class="datos">
+          <strong>{{ r.titulo }}</strong>
+          <span>{{ r.genero }} · {{ r.duracion }} min</span>
+        </div>
+
+        <div class="cantidad">
+          <button
+            type="button"
+            (click)="restarUno(r.id)"
+            [attr.aria-label]="'Quitar una entrada de ' + r.titulo"
+          >−</button>
+          <span aria-live="polite">{{ r.cantidad }}</span>
+          <button
+            type="button"
+            (click)="sumarUno(r.id)"
+            [disabled]="r.cantidad >= r.disponibles"
+            [attr.aria-label]="'Añadir una entrada de ' + r.titulo"
+          >+</button>
+        </div>
+
+        <span class="precio">{{ r.precio * r.cantidad }} €</span>
+        <button type="button" (click)="quitar(r.id)">Quitar</button>
+      </li>
+    }
+  </ul>
+
+  <button type="button" class="vaciar" (click)="vaciar()">Vaciar toda la reserva</button>
+}

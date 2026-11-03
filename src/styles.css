@@ -1,1 +1,12 @@
-/* You can add global styles to this file, and also import other style files */
+/* Estilos globales de la aplicación */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #f4f4f5;
+  color: #18181b;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
